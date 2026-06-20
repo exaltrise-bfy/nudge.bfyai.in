@@ -1,0 +1,1173 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nudge Call Manager — Call Screener for Android by BFY</title>
+<meta name="description" content="Nudge Call Manager silences unknown and spam calls before they ring. Your important contacts always come through. Android only. Try free for 7 days." />
+<meta property="og:title" content="Nudge Call Manager — Call Screener for Android" />
+<meta property="og:description" content="Silence spam. Protect your important calls. Android only. Free for 7 days." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --purple: #7c3aed;
+    --purple-lt: #a78bfa;
+    --purple-dk: #4c1d95;
+    --sky: #38bdf8;
+    --sky-dk: #0284c7;
+    --green: #4ade80;
+    --red: #f87171;
+    --amber: #fbbf24;
+    --bg: #08050f;
+    --surface: #110d1f;
+    --surface2: #1a1432;
+    --border: rgba(124,58,237,0.18);
+    --text: #f1f0f8;
+    --text2: #a09ab8;
+    --text3: #6d6685;
+    --glass: rgba(17,13,31,0.72);
+    --radius: 20px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ──────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 64px;
+    backdrop-filter: blur(20px);
+    background: rgba(8,5,15,0.8);
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+  .nav-logo-text { font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; line-height: 1.25; }
+  .nav-logo-text .sub { display: block; font-size: 10px; font-weight: 500; color: var(--text2); letter-spacing: 0.1px; }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: linear-gradient(135deg, var(--purple), var(--sky-dk));
+    color: #fff; border: none; padding: 9px 20px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
+  .nav-menu-btn { display: none; background: none; border: none; cursor: pointer; color: var(--text); font-size: 22px; }
+  /* bfyai brand mark — bfy + small ai + red i */
+  .bm { font-weight: 700; letter-spacing: -0.3px; }
+  .bm small { font-size: 0.78em; font-weight: 600; }
+  .bm .ri { display: inline-block; position: relative; }
+  .bm .ri::after { content: ''; position: absolute; width: 0.22em; height: 0.22em; background: #ef4444; border-radius: 50%; top: 0.06em; left: 50%; transform: translateX(-50%); }
+
+  /* ── HERO ─────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 100px 5vw 60px;
+    position: relative; overflow: hidden;
+  }
+  .hero-inner {
+    display: grid; grid-template-columns: 3fr 2fr;
+    gap: 48px; align-items: center;
+    max-width: 1280px; width: 100%;
+  }
+  .hero-text { text-align: left; }
+  .hero-glow {
+    position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+    width: 900px; height: 600px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(124,58,237,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute; bottom: -5%; right: -10%;
+    width: 500px; height: 400px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(56,189,248,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.35);
+    border-radius: 100px; padding: 6px 16px;
+    font-size: 13px; font-weight: 600; color: var(--purple-lt);
+    margin-bottom: 24px;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple-lt); animation: pulse 2s infinite; }
+  .hero h1 {
+    font-size: clamp(42px, 7vw, 88px); font-weight: 900; line-height: 1.05;
+    letter-spacing: -3px; margin-bottom: 24px;
+    animation: fadeUp .7s .1s ease both;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(135deg, var(--purple-lt) 0%, var(--sky) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub {
+    font-size: clamp(15px, 1.6vw, 19px); color: var(--text2); max-width: 480px;
+    margin: 0 0 36px; font-weight: 400; line-height: 1.65;
+    animation: fadeUp .7s .2s ease both;
+  }
+  .hero-actions { display: flex; gap: 16px; justify-content: flex-start; flex-wrap: wrap; animation: fadeUp .7s .3s ease both; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), var(--sky-dk));
+    color: #fff; text-decoration: none; border: none;
+    padding: 16px 32px; border-radius: 14px; font-size: 16px; font-weight: 700;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 8px 32px rgba(124,58,237,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,58,237,0.55); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border); text-decoration: none;
+    padding: 16px 32px; border-radius: 14px; font-size: 16px; font-weight: 600;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: background .2s, border-color .2s;
+  }
+  .btn-secondary:hover { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.4); }
+  .hero-trial { margin-top: 16px; font-size: 13px; color: var(--text3); animation: fadeUp .7s .4s ease both; }
+  .hero-trial span { color: var(--green); font-weight: 600; }
+  .hero-phones {
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+    animation: fadeUp .8s .5s ease both;
+  }
+  .hero-video {
+    width: 100%; aspect-ratio: 16/9;
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(124,58,237,0.35), 0 32px 72px rgba(124,58,237,0.25);
+    position: relative; cursor: pointer; display: block; text-decoration: none;
+    background: #000;
+  }
+  .hero-video img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .4s ease, opacity .3s;
+  }
+  .hero-video:hover img { transform: scale(1.03); opacity: .85; }
+  .hero-video-play {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px;
+  }
+  .hero-video-btn {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transition: transform .25s, background .2s;
+  }
+  .hero-video:hover .hero-video-btn { transform: scale(1.1); background: #fff; }
+  .hero-video-btn svg { width: 28px; height: 28px; margin-left: 4px; }
+  .hero-video-label {
+    font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9);
+    background: rgba(0,0,0,0.5); padding: 5px 14px; border-radius: 20px;
+    backdrop-filter: blur(6px);
+  }
+
+  /* ── PHONE MOCKUP ─────────────────────────── */
+  .phone {
+    width: 170px; flex-shrink: 0; position: relative;
+    transition: transform .3s;
+  }
+  .phone:hover { transform: translateY(-8px); }
+  .phone-center { transform: scale(1.08); z-index: 2; }
+  .phone-left  { transform: rotate(-8deg) translateX(30px); opacity: .7; }
+  .phone-right { transform: rotate(8deg) translateX(-30px); opacity: .7; }
+  .phone-frame {
+    background: var(--surface);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 36px; overflow: hidden;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.6);
+    padding: 14px 12px 20px;
+    position: relative;
+  }
+  .phone-notch {
+    width: 80px; height: 24px; background: #000;
+    border-radius: 0 0 16px 16px; margin: 0 auto 10px;
+    position: relative;
+  }
+  .phone-notch::after {
+    content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,.15);
+  }
+  .phone-screen { border-radius: 24px; overflow: hidden; background: #0d0a1a; }
+
+  /* ── SCREEN: HOME ─────────────────────────── */
+  .screen-home { padding: 12px 10px; }
+  .screen-home .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .screen-home .top-bar .title { font-size: 15px; font-weight: 700; }
+  .screen-home .top-bar .badge { background: rgba(124,58,237,.3); color: var(--purple-lt); font-size: 9px; padding: 2px 7px; border-radius: 20px; }
+  .call-item { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .call-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .call-info { flex: 1; }
+  .call-name { font-size: 11px; font-weight: 600; }
+  .call-time { font-size: 9px; color: var(--text3); }
+  .call-tag { font-size: 8px; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
+  .tag-spam  { background: rgba(248,113,113,.2); color: #f87171; }
+  .tag-safe  { background: rgba(74,222,128,.2); color: #4ade80; }
+  .tag-bond  { background: rgba(124,58,237,.2); color: var(--purple-lt); }
+
+  /* ── SCREEN: SCREENING ───────────────────── */
+  .screen-screening { padding: 10px; text-align: center; }
+  .screen-screening .incoming { font-size: 9px; color: var(--text3); margin-bottom: 4px; letter-spacing: 1px; text-transform: uppercase; }
+  .screen-screening .caller-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--sky)); margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; }
+  .screen-screening .caller-name { font-size: 14px; font-weight: 700; }
+  .screen-screening .caller-num  { font-size: 9px; color: var(--text3); margin-bottom: 8px; }
+  .ai-badge { background: rgba(56,189,248,.15); border: 1px solid rgba(56,189,248,.3); color: var(--sky); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+  .screen-screening .reason { font-size: 8px; color: var(--text2); margin-bottom: 10px; }
+  .call-btns { display: flex; gap: 10px; justify-content: center; }
+  .call-btn { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .call-btn-red   { background: rgba(248,113,113,.25); }
+  .call-btn-green { background: rgba(74,222,128,.25); }
+
+  /* ── SCREEN: BOND ────────────────────────── */
+  .screen-bond { padding: 10px 8px; }
+  .bond-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .bond-row { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+  .bond-circle { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .bond-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; border: 2px solid transparent; }
+  .bond-avatar-family { background: rgba(124,58,237,.25); border-color: rgba(124,58,237,.5); color: var(--purple-lt); }
+  .bond-avatar-friends { background: rgba(56,189,248,.2); border-color: rgba(56,189,248,.4); color: var(--sky); }
+  .bond-avatar-work { background: rgba(251,191,36,.2); border-color: rgba(251,191,36,.4); color: var(--amber); }
+  .bond-label { font-size: 7px; color: var(--text3); }
+  .bond-section-label { font-size: 8px; color: var(--text3); margin-bottom: 3px; letter-spacing: .5px; text-transform: uppercase; }
+
+  /* ── FEATURES CAROUSEL ─────────────────────── */
+  section.features {
+    padding: 80px 0;
+    position: relative;
+  }
+  .section-label {
+    text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    color: var(--purple-lt); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-title {
+    text-align: center; font-size: clamp(28px, 4vw, 48px); font-weight: 800;
+    letter-spacing: -1.5px; margin-bottom: 10px; padding: 0 5vw;
+  }
+  .section-sub {
+    text-align: center; color: var(--text2); font-size: 16px; max-width: 520px;
+    margin: 0 auto 48px; padding: 0 5vw;
+  }
+  .cards-track {
+    display: flex; gap: 20px; padding: 20px 5vw 40px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; cursor: grab;
+  }
+  .cards-track::-webkit-scrollbar { display: none; }
+  .cards-track.grabbing { cursor: grabbing; }
+  /* ── FLIP CARD ────────────────────────────── */
+  .feature-card {
+    min-width: 300px; max-width: 300px; height: 440px;
+    scroll-snap-align: start; flex-shrink: 0;
+    position: relative; cursor: pointer;
+    perspective: 1200px;
+  }
+  .card-inner {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(.4,0,.2,1);
+    border-radius: 24px;
+  }
+  .feature-card.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 24px; overflow: hidden;
+  }
+  .card-front {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 24px; display: flex; flex-direction: column;
+    transition: border-color .3s, box-shadow .3s;
+  }
+  .card-front::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(135deg, rgba(124,58,237,0.05), transparent);
+  }
+  .feature-card:hover .card-front {
+    border-color: rgba(124,58,237,0.45);
+    box-shadow: 0 20px 48px rgba(124,58,237,0.18);
+  }
+  .card-back {
+    background: #0a0716; border: 1px solid rgba(124,58,237,0.3);
+    transform: rotateY(180deg);
+  }
+  .card-back > img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .card-img-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; height: 100%; padding: 28px; text-align: center;
+    background: radial-gradient(ellipse at 50% 40%, rgba(124,58,237,0.12) 0%, transparent 70%);
+  }
+  .card-img-placeholder .ph-icon { font-size: 42px; margin-bottom: 6px; }
+  .card-img-placeholder strong { font-size: 14px; font-weight: 700; color: var(--text); }
+  .card-img-placeholder p { font-size: 11px; color: var(--text3); line-height: 1.6; }
+  .card-back-label {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px;
+    background: linear-gradient(to top, rgba(8,5,15,0.95) 0%, transparent 100%);
+  }
+  .card-back-label h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .card-back-label p { font-size: 11px; color: var(--purple-lt); }
+  .card-flip-hint {
+    margin-top: auto; padding-top: 12px;
+    font-size: 11px; color: var(--purple-lt); font-weight: 600; opacity: 0.75;
+  }
+  .card-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 16px; flex-shrink: 0;
+  }
+  .card-icon-purple { background: rgba(124,58,237,0.2); }
+  .card-icon-sky    { background: rgba(56,189,248,0.15); }
+  .card-icon-green  { background: rgba(74,222,128,0.15); }
+  .card-icon-amber  { background: rgba(251,191,36,0.15); }
+  .card-front h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .card-front > p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+  /* phone mockup inside card front */
+  .card-phone-wrap { margin-top: 12px; display: flex; justify-content: center; flex: 1; align-items: center; }
+  .card-phone {
+    width: 118px; background: var(--surface2);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 22px; padding: 8px 6px 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  }
+  .card-phone-notch {
+    width: 40px; height: 12px; background: #000;
+    border-radius: 0 0 8px 8px; margin: 0 auto 5px;
+  }
+  .card-phone-screen { border-radius: 12px; overflow: hidden; background: #0d0a1a; min-height: 140px; }
+
+  /* ── HOW IT WORKS ─────────────────────────── */
+  section.how {
+    padding: 80px 5vw;
+    background: linear-gradient(180deg, transparent, rgba(124,58,237,0.04), transparent);
+  }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin-top: 48px; }
+  .step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 32px 28px; position: relative;
+    transition: transform .3s;
+  }
+  .step:hover { transform: translateY(-4px); }
+  .step-num {
+    font-size: 56px; font-weight: 900; letter-spacing: -2px;
+    background: linear-gradient(135deg, var(--purple-lt), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 12px; line-height: 1;
+  }
+  .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .step p  { font-size: 14px; color: var(--text2); line-height: 1.65; }
+  .step-arrow { position: absolute; right: -32px; top: 50%; transform: translateY(-50%); color: var(--border); font-size: 24px; display: none; }
+
+  /* ── PRICING ──────────────────────────────── */
+  section.pricing { padding: 80px 5vw; text-align: center; }
+  .pricing-card {
+    max-width: 420px; margin: 48px auto 0;
+    background: var(--surface); border: 1.5px solid rgba(124,58,237,0.4);
+    border-radius: 28px; padding: 40px 36px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 24px 64px rgba(124,58,237,0.2);
+  }
+  .pricing-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--purple), var(--sky));
+  }
+  .pricing-badge {
+    display: inline-block; background: linear-gradient(135deg, var(--purple), var(--sky-dk));
+    color: #fff; font-size: 12px; font-weight: 700; padding: 5px 14px;
+    border-radius: 100px; margin-bottom: 20px; letter-spacing: .5px;
+  }
+  .pricing-plan-name { font-size: 14px; color: var(--text3); font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .pricing-price { font-size: 52px; font-weight: 900; letter-spacing: -2px; margin-bottom: 4px; }
+  .pricing-price sup { font-size: 22px; vertical-align: super; margin-right: 2px; }
+  .pricing-period { font-size: 14px; color: var(--text2); margin-bottom: 4px; }
+  .pricing-per-day { font-size: 13px; color: var(--text3); margin-bottom: 28px; }
+  .pricing-features { list-style: none; text-align: left; margin-bottom: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .pricing-features li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+  .pricing-features li .check { color: var(--green); font-size: 16px; }
+  .pricing-trial-note { font-size: 13px; color: var(--text2); margin-bottom: 24px; background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.2); padding: 12px 16px; border-radius: 12px; }
+  .pricing-trial-note span { color: var(--green); font-weight: 700; }
+
+  /* ── STATS ────────────────────────────────── */
+  section.stats {
+    padding: 60px 5vw;
+    background: radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.1) 0%, transparent 70%);
+  }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px; text-align: center; }
+  .stat-num {
+    font-size: 48px; font-weight: 900; letter-spacing: -2px;
+    background: linear-gradient(135deg, var(--purple-lt), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .stat-label { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  /* ── TESTIMONIALS ─────────────────────────── */
+  section.testimonials { padding: 80px 5vw; }
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 48px; }
+  .testi-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    transition: transform .3s;
+  }
+  .testi-card:hover { transform: translateY(-4px); }
+  .testi-stars { color: var(--amber); font-size: 14px; margin-bottom: 14px; }
+  .testi-text { font-size: 15px; color: var(--text2); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
+  .testi-name { font-size: 14px; font-weight: 700; }
+  .testi-meta { font-size: 12px; color: var(--text3); }
+
+  /* ── CONTACT ──────────────────────────────── */
+  section.contact { padding: 80px 5vw; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; max-width: 960px; margin: 48px auto 0; }
+  .contact-info h3 { font-size: 28px; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
+  .contact-info p { color: var(--text2); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+  .contact-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .contact-item-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(124,58,237,0.15); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .contact-item-text { font-size: 14px; }
+  .contact-item-text a { color: var(--purple-lt); text-decoration: none; }
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 13px; font-weight: 600; color: var(--text2); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 16px;
+    color: var(--text); font-size: 14px; font-family: inherit;
+    transition: border-color .2s;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--purple); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-group select { appearance: none; cursor: pointer; }
+  .form-submit {
+    background: linear-gradient(135deg, var(--purple), var(--sky-dk));
+    color: #fff; border: none; padding: 14px 28px; border-radius: 12px;
+    font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+    transition: opacity .2s, transform .2s; align-self: flex-start;
+  }
+  .form-submit:hover { opacity: .85; transform: translateY(-1px); }
+  .form-success { display: none; text-align: center; padding: 20px; color: var(--green); font-weight: 600; }
+
+  /* ── WORK TOGETHER ───────────────────────── */
+  section.work-together { padding: 60px 5vw; }
+  .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
+  .work-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px 20px; text-align: center;
+    transition: transform .3s, border-color .3s;
+  }
+  .work-card:hover { transform: translateY(-4px); border-color: rgba(124,58,237,0.4); }
+  .work-card-icon { font-size: 32px; margin-bottom: 12px; }
+  .work-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .work-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* ── CTA BANNER ──────────────────────────── */
+  section.cta-banner {
+    padding: 80px 5vw; text-align: center;
+    background: linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(56,189,248,0.06) 100%);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .cta-banner h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 12px; }
+  .cta-banner p { font-size: 17px; color: var(--text2); margin-bottom: 36px; }
+
+  /* ── FOOTER ──────────────────────────────── */
+  footer {
+    padding: 48px 5vw 32px;
+    border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  }
+  .footer-brand .nav-logo { margin-bottom: 14px; display: inline-flex; }
+  .footer-brand p { font-size: 13px; color: var(--text3); line-height: 1.7; max-width: 240px; }
+  .footer-col h5 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; letter-spacing: .5px; }
+  .footer-col a { display: block; font-size: 13px; color: var(--text3); text-decoration: none; margin-bottom: 9px; transition: color .2s; }
+  .footer-col a:hover { color: var(--purple-lt); }
+  .footer-bottom {
+    grid-column: 1 / -1; padding-top: 32px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: var(--text3); flex-wrap: wrap; gap: 8px;
+  }
+  .footer-bottom a { color: var(--text3); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--purple-lt); }
+
+  /* ── ANIMATIONS ──────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: .4; }
+  }
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MOBILE ──────────────────────────────── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-menu-btn { display: block; }
+    nav.open .nav-links {
+      display: flex; flex-direction: column;
+      position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
+      background: var(--bg); padding: 32px 5vw; gap: 20px; z-index: 99;
+      align-items: flex-start;
+    }
+    nav.open .nav-links a { font-size: 18px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-text { text-align: center; }
+    .hero-sub { margin: 0 auto 32px; }
+    .hero-actions { justify-content: center; }
+    .hero-phones { order: -1; }
+    .hero-video { border-radius: 12px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    footer { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    footer { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="icon.png" alt="Nudge Call Manager" class="nav-logo-img" />
+    <span class="nav-logo-text">Call Manager<span class="sub">Built for you</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="#" class="nav-cta">Download Free</a>
+  </div>
+  <button class="nav-menu-btn" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-inner">
+
+  <!-- LEFT: video -->
+  <div class="hero-phones">
+    <a class="hero-video" href="https://www.youtube.com/watch?v=SF9Fvuvk958" target="_blank" rel="noopener" aria-label="Watch Nudge Call Manager on YouTube">
+      <img src="https://img.youtube.com/vi/SF9Fvuvk958/maxresdefault.jpg" alt="Nudge Call Manager demo video" />
+      <div class="hero-video-play">
+        <div class="hero-video-btn">
+          <svg viewBox="0 0 24 24" fill="#e00"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <span class="hero-video-label">Watch on YouTube</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- RIGHT: text -->
+  <div class="hero-text">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Android only · Available now on Google Play
+    </div>
+
+    <h1>Your calls,<br/><span class="grad">your&nbsp;control.</span></h1>
+
+    <p class="hero-sub">
+      Nudge Call Manager silences unknown and spam calls before your phone even rings. Your Bond contacts — family, friends, colleagues — always come through loud and clear. No cloud. No account. Just a quieter phone.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">⬇ Download for Android</a>
+      <a href="#features" class="btn-secondary">See features →</a>
+    </div>
+
+    <p class="hero-trial"><span>7 days free</span> — no credit card needed. Android only.</p>
+  </div>
+
+  </div><!-- /hero-inner -->
+</section>
+
+<!-- ── FEATURES CAROUSEL ─────────────────────────── -->
+<section class="features" id="features">
+  <p class="section-label reveal">What Nudge Call Manager does</p>
+  <h2 class="section-title reveal">Six features that transform<br/>how you handle calls</h2>
+  <p class="section-sub reveal">Swipe through to explore everything Nudge Call Manager can do for you.</p>
+
+  <div class="cards-track" id="cardsTrack">
+
+    <!-- Card 1: Call Screening -->
+    <div class="feature-card reveal" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-icon card-icon-purple">🤖</div>
+          <h3>Call Screening</h3>
+          <p>Nudge Call Manager silences unknown and flagged numbers before your phone rings. You see who called and decide — allow, block, or ignore.</p>
+          <div class="card-phone-wrap">
+            <div class="card-phone">
+              <div class="card-phone-notch"></div>
+              <div class="card-phone-screen" style="padding:8px;text-align:center">
+                <div style="font-size:7px;color:var(--text3);margin-bottom:4px;letter-spacing:1px">INCOMING CALL</div>
+                <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#38bdf8);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;">?</div>
+                <div style="font-size:9px;font-weight:700;margin-bottom:2px">Unknown</div>
+                <div style="font-size:6px;color:var(--text3);margin-bottom:5px">+44 7911 ****</div>
+                <div style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#f87171;font-size:6px;padding:2px 5px;border-radius:20px;display:inline-block;margin-bottom:5px">🔇 Silenced</div>
+                <div style="display:flex;gap:8px;justify-content:center;margin-top:5px">
+                  <div style="width:24px;height:24px;border-radius:50%;background:rgba(248,113,113,.2);display:flex;align-items:center;justify-content:center;font-size:10px">📵</div>
+                  <div style="width:24px;height:24px;border-radius:50%;background:rgba(74,222,128,.2);display:flex;align-items:center;justify-content:center;font-size:10px">✅</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip-hint">Tap to add screenshot →</div>
+        </div>
+        <div class="card-back">
+          <img src="screenshots/screening.png" alt="Call Screening"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="card-img-placeholder" style="display:none">
+            <div class="ph-icon">🤖</div>
+            <strong>Call Screening</strong>
+            <p>Drop your screenshot as<br/><code style="color:var(--purple-lt);font-size:10px">screenshots/screening.png</code></p>
+          </div>
+          <div class="card-back-label"><h4>Call Screening</h4><p>↩ Tap to flip back</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Bond Circles -->
+    <div class="feature-card reveal" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-icon card-icon-sky">🤝</div>
+          <h3>Bond Circles</h3>
+          <p>Group your most important people — family, friends, colleagues — into circles. Bond contacts always come through, loud and clear.</p>
+          <div class="card-phone-wrap">
+            <div class="card-phone">
+              <div class="card-phone-notch"></div>
+              <div class="card-phone-screen" style="padding:8px">
+                <div style="font-size:9px;font-weight:700;margin-bottom:5px">Bond Circles</div>
+                <div style="font-size:6px;color:var(--text3);margin-bottom:3px;text-transform:uppercase">Family</div>
+                <div style="display:flex;gap:4px;margin-bottom:5px">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:26px;height:26px;border-radius:50%;background:rgba(124,58,237,.3);color:#a78bfa;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;border:1.5px solid rgba(124,58,237,.5)">MK</div><span style="font-size:5px;color:var(--text3)">Mom</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:26px;height:26px;border-radius:50%;background:rgba(124,58,237,.3);color:#a78bfa;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;border:1.5px solid rgba(124,58,237,.5)">DA</div><span style="font-size:5px;color:var(--text3)">Dad</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:26px;height:26px;border-radius:50%;background:rgba(124,58,237,.15);color:#a78bfa;display:flex;align-items:center;justify-content:center;font-size:9px;border:1.5px dashed rgba(124,58,237,.4)">+</div><span style="font-size:5px;color:var(--text3)">Add</span></div>
+                </div>
+                <div style="font-size:6px;color:var(--text3);margin-bottom:3px;text-transform:uppercase">Work</div>
+                <div style="display:flex;gap:4px">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:26px;height:26px;border-radius:50%;background:rgba(251,191,36,.2);color:#fbbf24;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;border:1.5px solid rgba(251,191,36,.4)">SR</div><span style="font-size:5px;color:var(--text3)">Sri</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:26px;height:26px;border-radius:50%;background:rgba(251,191,36,.2);color:#fbbf24;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;border:1.5px solid rgba(251,191,36,.4)">AN</div><span style="font-size:5px;color:var(--text3)">Anita</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip-hint">Tap to add screenshot →</div>
+        </div>
+        <div class="card-back">
+          <img src="screenshots/bond.png" alt="Bond Circles"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="card-img-placeholder" style="display:none">
+            <div class="ph-icon">🤝</div>
+            <strong>Bond Circles</strong>
+            <p>Drop your screenshot as<br/><code style="color:var(--purple-lt);font-size:10px">screenshots/bond.png</code></p>
+          </div>
+          <div class="card-back-label"><h4>Bond Circles</h4><p>↩ Tap to flip back</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Insights -->
+    <div class="feature-card reveal" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-icon card-icon-sky">✦</div>
+          <h3>Call Insights</h3>
+          <p>See your call history at a glance — how many unknown calls were silenced, which Bond contacts you talk to most, and weekly trends.</p>
+          <div class="card-phone-wrap">
+            <div class="card-phone">
+              <div class="card-phone-notch"></div>
+              <div class="card-phone-screen" style="padding:8px">
+                <div style="font-size:9px;font-weight:700;margin-bottom:2px">This Week</div>
+                <div style="font-size:6px;color:var(--text3);margin-bottom:6px">June 14 – 20</div>
+                <div style="display:flex;align-items:flex-end;gap:3px;height:44px;margin-bottom:5px">
+                  <div style="flex:1;background:rgba(124,58,237,.4);border-radius:3px 3px 0 0;height:60%"></div>
+                  <div style="flex:1;background:rgba(124,58,237,.4);border-radius:3px 3px 0 0;height:80%"></div>
+                  <div style="flex:1;background:linear-gradient(180deg,#7c3aed,#38bdf8);border-radius:3px 3px 0 0;height:100%"></div>
+                  <div style="flex:1;background:rgba(124,58,237,.4);border-radius:3px 3px 0 0;height:45%"></div>
+                  <div style="flex:1;background:rgba(124,58,237,.4);border-radius:3px 3px 0 0;height:65%"></div>
+                  <div style="flex:1;background:rgba(124,58,237,.4);border-radius:3px 3px 0 0;height:30%"></div>
+                  <div style="flex:1;background:rgba(124,58,237,.4);border-radius:3px 3px 0 0;height:50%"></div>
+                </div>
+                <div style="background:rgba(248,113,113,.1);border-radius:7px;padding:4px 6px;margin-bottom:3px;display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:6px;color:#f87171">🚫 Spam Blocked</span><span style="font-size:8px;font-weight:700;color:#f87171">37</span>
+                </div>
+                <div style="background:rgba(74,222,128,.1);border-radius:7px;padding:4px 6px;display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:6px;color:#4ade80">✅ Legit Calls</span><span style="font-size:8px;font-weight:700;color:#4ade80">12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip-hint">Tap to add screenshot →</div>
+        </div>
+        <div class="card-back">
+          <img src="screenshots/insights.png" alt="Call Insights"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="card-img-placeholder" style="display:none">
+            <div class="ph-icon">✦</div>
+            <strong>Call Insights</strong>
+            <p>Drop your screenshot as<br/><code style="color:var(--purple-lt);font-size:10px">screenshots/insights.png</code></p>
+          </div>
+          <div class="card-back-label"><h4>Call Insights</h4><p>↩ Tap to flip back</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Spam Database -->
+    <div class="feature-card reveal" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-icon" style="background:rgba(248,113,113,.15)">🚫</div>
+          <h3>Spam Database</h3>
+          <p>Backed by a community-sourced database of millions of spam numbers. Nudge Call Manager knows the bad actors before they even call you.</p>
+          <div class="card-phone-wrap">
+            <div class="card-phone">
+              <div class="card-phone-notch"></div>
+              <div class="card-phone-screen" style="padding:8px">
+                <div style="font-size:9px;font-weight:700;margin-bottom:5px">🚫 Blocked</div>
+                <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;padding:4px 6px;margin-bottom:3px">
+                  <div style="font-size:8px;font-weight:600;color:#f87171">+91 9876 ****</div>
+                  <div style="font-size:6px;color:var(--text3)">94 reports · Telemarketer</div>
+                </div>
+                <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;padding:4px 6px;margin-bottom:3px">
+                  <div style="font-size:8px;font-weight:600;color:#f87171">+1 646 555 ****</div>
+                  <div style="font-size:6px;color:var(--text3)">211 reports · Scam</div>
+                </div>
+                <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;padding:4px 6px">
+                  <div style="font-size:8px;font-weight:600;color:#f87171">+44 7911 ****</div>
+                  <div style="font-size:6px;color:var(--text3)">58 reports · Robocall</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip-hint">Tap to add screenshot →</div>
+        </div>
+        <div class="card-back">
+          <img src="screenshots/spam.png" alt="Spam Database"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="card-img-placeholder" style="display:none">
+            <div class="ph-icon">🚫</div>
+            <strong>Spam Database</strong>
+            <p>Drop your screenshot as<br/><code style="color:var(--purple-lt);font-size:10px">screenshots/spam.png</code></p>
+          </div>
+          <div class="card-back-label"><h4>Spam Database</h4><p>↩ Tap to flip back</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Offline & Private -->
+    <div class="feature-card reveal" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-icon card-icon-green">🔒</div>
+          <h3>Offline & Private</h3>
+          <p>Everything runs on your device. No account. No cloud uploads. No tracking. Your call history and contacts stay yours, always.</p>
+          <div class="card-phone-wrap">
+            <div class="card-phone">
+              <div class="card-phone-notch"></div>
+              <div class="card-phone-screen" style="padding:10px;text-align:center">
+                <div style="font-size:30px;margin-bottom:6px">🛡️</div>
+                <div style="font-size:9px;font-weight:700;margin-bottom:5px">100% On-Device</div>
+                <div style="display:flex;flex-direction:column;gap:4px;text-align:left">
+                  <div style="font-size:7px;color:#4ade80">✓ No cloud upload</div>
+                  <div style="font-size:7px;color:#4ade80">✓ No account required</div>
+                  <div style="font-size:7px;color:#4ade80">✓ Works offline</div>
+                  <div style="font-size:7px;color:#4ade80">✓ PIN-secured</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip-hint">Tap to add screenshot →</div>
+        </div>
+        <div class="card-back">
+          <img src="screenshots/privacy.png" alt="Offline & Private"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="card-img-placeholder" style="display:none">
+            <div class="ph-icon">🔒</div>
+            <strong>Offline & Private</strong>
+            <p>Drop your screenshot as<br/><code style="color:var(--purple-lt);font-size:10px">screenshots/privacy.png</code></p>
+          </div>
+          <div class="card-back-label"><h4>Offline & Private</h4><p>↩ Tap to flip back</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6: 26 Languages -->
+    <div class="feature-card reveal" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-icon card-icon-amber">🌍</div>
+          <h3>26 Languages</h3>
+          <p>Nudge Call Manager automatically detects your device language and currency. Available in 26 languages across 32 countries right out of the box.</p>
+          <div class="card-phone-wrap">
+            <div class="card-phone">
+              <div class="card-phone-notch"></div>
+              <div class="card-phone-screen" style="padding:8px">
+                <div style="font-size:9px;font-weight:700;margin-bottom:5px">🌍 Languages</div>
+                <div style="display:flex;flex-wrap:wrap;gap:3px">
+                  <span style="background:rgba(124,58,237,.2);color:#a78bfa;font-size:6px;padding:2px 5px;border-radius:7px">हिंदी</span>
+                  <span style="background:rgba(56,189,248,.15);color:#38bdf8;font-size:6px;padding:2px 5px;border-radius:7px">English</span>
+                  <span style="background:rgba(251,191,36,.15);color:#fbbf24;font-size:6px;padding:2px 5px;border-radius:7px">日本語</span>
+                  <span style="background:rgba(124,58,237,.2);color:#a78bfa;font-size:6px;padding:2px 5px;border-radius:7px">Español</span>
+                  <span style="background:rgba(74,222,128,.15);color:#4ade80;font-size:6px;padding:2px 5px;border-radius:7px">Deutsch</span>
+                  <span style="background:rgba(56,189,248,.15);color:#38bdf8;font-size:6px;padding:2px 5px;border-radius:7px">Français</span>
+                  <span style="background:rgba(251,191,36,.15);color:#fbbf24;font-size:6px;padding:2px 5px;border-radius:7px">తెలుగు</span>
+                  <span style="background:rgba(56,189,248,.15);color:#38bdf8;font-size:6px;padding:2px 5px;border-radius:7px">+18 more</span>
+                </div>
+                <div style="margin-top:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);border-radius:7px;padding:4px 6px">
+                  <div style="font-size:7px;color:#4ade80">Auto-detected from device locale</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip-hint">Tap to add screenshot →</div>
+        </div>
+        <div class="card-back">
+          <img src="screenshots/languages.png" alt="26 Languages"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="card-img-placeholder" style="display:none">
+            <div class="ph-icon">🌍</div>
+            <strong>26 Languages</strong>
+            <p>Drop your screenshot as<br/><code style="color:var(--purple-lt);font-size:10px">screenshots/languages.png</code></p>
+          </div>
+          <div class="card-back-label"><h4>26 Languages</h4><p>↩ Tap to flip back</p></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-track -->
+
+  <!-- scroll dots -->
+  <div style="display:flex;justify-content:center;gap:8px;margin-top:4px" id="scrollDots">
+    <span class="dot" style="width:20px;height:6px;border-radius:3px;background:var(--purple);transition:all .3s"></span>
+    <span class="dot" style="width:6px;height:6px;border-radius:3px;background:var(--border);transition:all .3s"></span>
+    <span class="dot" style="width:6px;height:6px;border-radius:3px;background:var(--border);transition:all .3s"></span>
+    <span class="dot" style="width:6px;height:6px;border-radius:3px;background:var(--border);transition:all .3s"></span>
+    <span class="dot" style="width:6px;height:6px;border-radius:3px;background:var(--border);transition:all .3s"></span>
+    <span class="dot" style="width:6px;height:6px;border-radius:3px;background:var(--border);transition:all .3s"></span>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ─────────────────────────────── -->
+<section class="how" id="how">
+  <p class="section-label reveal">Simple setup</p>
+  <h2 class="section-title reveal">Up and running in 60 seconds</h2>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <h3>Download & Set a PIN</h3>
+      <p>No account or email needed. Just install, pick a secure PIN, and Nudge Call Manager is ready. Your identity stays on your device.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <h3>Enable Call Screening</h3>
+      <p>Grant call screening permission once. Nudge Call Manager will silently check every incoming call against the community spam database and silence unknown numbers — all on-device.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <h3>Build Your Bond Circles</h3>
+      <p>Add your most important contacts — family, work, friends — to circles so they always ring through, never get screened out.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ────────────────────────────────────── -->
+<section class="stats">
+  <div class="stats-grid">
+    <div class="reveal">
+      <div class="stat-num">26</div>
+      <div class="stat-label">Languages supported</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-num">32</div>
+      <div class="stat-label">Countries with local pricing</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Data sent to cloud</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Days free to try</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ───────────────────────────────────── -->
+<section class="pricing" id="pricing">
+  <p class="section-label reveal">Simple pricing</p>
+  <h2 class="section-title reveal">One plan. Everything included.</h2>
+  <p class="section-sub reveal">Start free for 7 days — no payment details required at download.</p>
+
+  <div class="pricing-card reveal">
+    <span class="pricing-badge">🎁 7-Day Free Trial</span>
+    <div class="pricing-plan-name">Nudge Pro · Annual</div>
+    <div class="pricing-price"><sup>₹</sup>199</div>
+    <div class="pricing-period">per year · billed annually via Google Play</div>
+    <div class="pricing-per-day">Just ₹0.55/day · Priced in your local currency</div>
+
+    <div class="pricing-trial-note">
+      <span>Free for your first 7 days.</span> From day 8, your annual subscription begins automatically through Google Play — cancel anytime before that.
+    </div>
+
+    <ul class="pricing-features">
+      <li><span class="check">✓</span> Call screening — silences unknown &amp; spam numbers</li>
+      <li><span class="check">✓</span> Community spam database lookup</li>
+      <li><span class="check">✓</span> Unlimited Bond circles &amp; contacts</li>
+      <li><span class="check">✓</span> Call Insights dashboard</li>
+      <li><span class="check">✓</span> 26 languages, 32 local currencies</li>
+      <li><span class="check">✓</span> 100% offline, no account needed</li>
+      <li><span class="check">✓</span> Future updates included</li>
+    </ul>
+
+    <!-- How to start -->
+    <div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:14px;padding:16px 18px;margin-bottom:20px;text-align:left">
+      <div style="font-size:12px;font-weight:700;color:var(--purple-lt);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">How to start your free trial</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(124,58,237,0.25);color:var(--purple-lt);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+          <span style="font-size:13px;color:var(--text2)">Download <strong style="color:var(--text)">Nudge Call Manager</strong> from Google Play</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(124,58,237,0.25);color:var(--purple-lt);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+          <span style="font-size:13px;color:var(--text2)">Open the app and set your PIN — no account needed</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(74,222,128,0.2);color:#4ade80;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+          <span style="font-size:13px;color:var(--text2)"><strong style="color:#4ade80">7-day free trial starts automatically</strong> — no card required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Play button -->
+    <a href="#" class="btn-primary" style="width:100%;justify-content:center;gap:12px;font-size:15px;">
+      <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.5 0.8L11.5 10.8L1.5 20.8C1.1 20.5 0.9 20.1 0.9 19.6V1.9C0.9 1.4 1.1 1 1.5 0.8Z" fill="white" fill-opacity="0.9"/>
+        <path d="M15.2 7.1L3.2 0.3L11.5 8.6L15.2 7.1Z" fill="white"/>
+        <path d="M18.5 9.6C19.2 10 19.2 11 18.5 11.4L15.8 12.9L11.5 8.6L11.5 13L15.8 12.9L18.5 14.4" fill="white" fill-opacity="0.7"/>
+        <path d="M3.2 21.3L15.2 14.5L11.5 10.8L3.2 21.3Z" fill="white" fill-opacity="0.8"/>
+      </svg>
+      Get it on Google Play
+    </a>
+    <p style="text-align:center;margin-top:10px;font-size:12px;color:var(--text3)">Android only &nbsp;·&nbsp; Free for 7 days &nbsp;·&nbsp; No credit card</p>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ──────────────────────────────── -->
+<section class="testimonials">
+  <p class="section-label reveal">Real feedback</p>
+  <h2 class="section-title reveal">What people are saying</h2>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★☆</div>
+      <p class="testi-text">"Unknown numbers just don't ring anymore — they go silent and I see the missed call log. I pick up only when I recognise the number. Saved me a lot of interruptions during work."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(124,58,237,.25);color:#a78bfa">RK</div>
+        <div><div class="testi-name">Rahul K.</div><div class="testi-meta">Mumbai · Android user</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★☆</div>
+      <p class="testi-text">"I added my parents and a couple of close friends to Bond circles. Their calls ring normally — everyone else is silenced. Took about two minutes to set up."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(56,189,248,.2);color:#38bdf8">PS</div>
+        <div><div class="testi-name">Priya S.</div><div class="testi-meta">Bengaluru · Android user</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"No login, no sign-up, just installed and it worked. I like that nothing is uploaded anywhere. The PIN lock is simple and the call log is clean."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(74,222,128,.2);color:#4ade80">AM</div>
+        <div><div class="testi-name">Arjun M.</div><div class="testi-meta">Hyderabad · Android user</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ─────────────────────────────────── -->
+<section class="cta-banner">
+  <h2 class="reveal">Ready to take back<br/>your phone?</h2>
+  <p class="reveal">Join thousands of people who've stopped answering spam calls for good.</p>
+  <div class="hero-actions reveal" style="justify-content:center">
+    <a href="#" class="btn-primary">⬇ Download for Android — Free</a>
+    <a href="#contact" class="btn-secondary">Get in touch →</a>
+  </div>
+  <p style="margin-top:16px;font-size:13px;color:var(--text3)">Android only &nbsp;·&nbsp; 7-day free trial &nbsp;·&nbsp; No credit card needed</p>
+</section>
+
+<!-- ── WORK TOGETHER ──────────────────────────────── -->
+<section class="work-together" id="work">
+  <p class="section-label reveal">Work with us</p>
+  <h2 class="section-title reveal">Let's build something together</h2>
+  <p class="section-sub reveal">We're open to working with people who have ideas, problems to solve, or just want to collaborate. No pitch deck needed — a simple message is enough.</p>
+  <div class="work-grid">
+    <div class="work-card reveal">
+      <div class="work-card-icon">💡</div>
+      <h4>Have an idea?</h4>
+      <p>Got something in mind — an app, a tool, a product? Tell us what you're thinking. We can scope it, estimate it, and build it with you.</p>
+    </div>
+    <div class="work-card reveal">
+      <div class="work-card-icon">🤝</div>
+      <h4>Partner with us</h4>
+      <p>If your business or platform could benefit from what we build, let's talk. We're open to partnerships that make sense for both sides.</p>
+    </div>
+    <div class="work-card reveal">
+      <div class="work-card-icon">🛠️</div>
+      <h4>Need something built?</h4>
+      <p>Have a specific problem or requirement? Share the brief and we'll come back with an honest estimate — no commitment needed upfront.</p>
+    </div>
+    <div class="work-card reveal">
+      <div class="work-card-icon">💬</div>
+      <h4>Just want to talk?</h4>
+      <p>You don't need a fully formed idea. If you're thinking through something and want a second opinion, drop us a message.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ─────────────────────────────────────── -->
+<section class="contact" id="contact">
+  <div style="text-align:center;max-width:600px;margin:0 auto">
+    <p class="section-label reveal">Get in touch</p>
+    <h2 class="section-title reveal" style="margin-bottom:16px">We'd love to hear from you</h2>
+    <p class="section-sub reveal" style="margin-bottom:36px">Questions, ideas, feedback, or just want to say hi — drop us a line and we'll get back to you.</p>
+    <a href="mailto:hello@bfyai.in" class="reveal" style="display:inline-flex;align-items:center;gap:10px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.35);border-radius:100px;padding:14px 28px;color:var(--purple-lt);font-size:16px;font-weight:700;text-decoration:none;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(124,58,237,0.28)';this.style.borderColor='rgba(124,58,237,0.6)'" onmouseout="this.style.background='rgba(124,58,237,0.15)';this.style.borderColor='rgba(124,58,237,0.35)'">
+      <span>✉️</span> hello@bfyai.in
+    </a>
+    <p style="margin-top:18px;font-size:13px;color:var(--text3)">We typically reply within 24 hours · India</p>
+
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────── -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="nav-logo">
+      <img src="icon.png" alt="Nudge Call Manager" class="nav-logo-img" />
+      <span class="nav-logo-text">Call Manager<span class="sub">Built for you</span></span>
+    </a>
+    <p>Call screening that runs entirely on your device. No cloud. No tracking. Just a quieter phone.</p>
+    <p style="margin-top:12px">A product by <a href="https://bfyai.in" style="color:var(--purple-lt);text-decoration:none"><span class="bm">bfy<small>a<span class="ri">ı</span></small></span>.in</a> · Android only</p>
+  </div>
+
+  <div class="footer-col">
+    <h5>Product</h5>
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#">Download</a>
+  </div>
+
+  <div class="footer-col">
+    <h5>Company</h5>
+    <a href="https://bfyai.in" target="_blank" rel="noopener">About <span class="bm">bfy<small>a<span class="ri">ı</span></small></span></a>
+    <a href="#contact">Contact</a>
+    <a href="#work">Work together</a>
+  </div>
+
+  <div class="footer-col">
+    <h5>Legal</h5>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms & Conditions</a>
+    <a href="data.html">Data Policy</a>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2024–2026 <span class="bm">bfy<small>a<span class="ri">ı</span></small></span> · Nudge Call Manager · All rights reserved</span>
+    <span>
+      <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+      <a href="terms.html">Terms</a> &nbsp;·&nbsp;
+      <a href="data.html">Data</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  // ── Drag-scroll carousel
+  const track = document.getElementById('cardsTrack');
+  const dots  = document.querySelectorAll('.dot');
+  let isDragging = false, startX = 0, scrollLeft = 0;
+
+  track.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft;
+    track.classList.add('grabbing');
+  });
+  track.addEventListener('mouseleave', () => { isDragging = false; track.classList.remove('grabbing'); });
+  track.addEventListener('mouseup', () => { isDragging = false; track.classList.remove('grabbing'); });
+  track.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - track.offsetLeft;
+    track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+  });
+
+  // update dots on scroll
+  track.addEventListener('scroll', () => {
+    const cards = track.querySelectorAll('.feature-card');
+    const total = track.scrollWidth - track.clientWidth;
+    const idx = Math.round((track.scrollLeft / total) * (cards.length - 1));
+    dots.forEach((d, i) => {
+      d.style.width = i === idx ? '20px' : '6px';
+      d.style.background = i === idx ? 'var(--purple)' : 'var(--border)';
+    });
+  });
+
+  // ── Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Nav shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').style.boxShadow = window.scrollY > 20
+      ? '0 4px 32px rgba(0,0,0,0.4)' : 'none';
+  });
+
+  // ── Contact form
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('formSuccess').style.display = 'block';
+      e.target.reset(); btn.style.display = 'none';
+    }, 900);
+  }
+</script>
+</body>
+</html>
