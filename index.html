@@ -533,79 +533,64 @@
       align-items: flex-start;
     }
     nav.open .nav-links a { font-size: 18px; }
-    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero { padding: 90px 5vw 48px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
     .hero-text { text-align: center; }
-    .hero-sub { margin: 0 auto 32px; }
+    .hero-sub { margin: 0 auto 28px; }
     .hero-actions { justify-content: center; }
+    .hero-trial { text-align: center; }
     .hero-phones { order: -1; }
-    .hero-video { border-radius: 12px; }
+    /* Hero animation — tablet/mobile sizing */
+    .hero-anim-wrap { border-radius: 12px; aspect-ratio: 4/3; }
+    .hc-logo-a, .hc-logo-c { width: 64px; height: 64px; }
+    .hc-logo-a { border-radius: 14px; }
+    .hc-ring { width: 80px; height: 80px; }
+    .hc-flow-dot { height: 28px; min-width: 28px; padding: 0 8px; border-radius: 14px; font-size: 9px; }
+    .hc-sh-dot  { height: 26px; min-width: 26px; padding: 0 7px; border-radius: 13px; font-size: 9px; }
+    .hc-phone { width: 138px; }
+    .hc-phone-frame { border-radius: 30px; padding: 10px 8px 14px; }
+    .hc-phone-notch { width: 54px; height: 17px; border-radius: 0 0 11px 11px; margin: 0 auto 7px; }
+    .hc-phone-screen { min-height: 166px; border-radius: 17px; }
+    .hc-ph-state { padding: 12px; }
+    /* Section / layout */
+    .section-sub { font-size: 14px; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .pricing-card { padding: 32px 22px; }
     .contact-grid { grid-template-columns: 1fr; gap: 40px; }
     footer { grid-template-columns: 1fr 1fr; }
     .footer-brand { grid-column: 1 / -1; }
     .footer-bottom { flex-direction: column; text-align: center; }
     .steps { grid-template-columns: 1fr; }
+    section.how, section.pricing, section.stats,
+    section.testimonials, section.contact,
+    section.work-together, section.cta-banner { padding: 60px 5vw; }
   }
   @media (max-width: 480px) {
+    .hero-anim-wrap { aspect-ratio: 1/1; }
+    .hc-logo-a, .hc-logo-c { width: 50px; height: 50px; }
+    .hc-logo-a { border-radius: 11px; }
+    .hc-ring { width: 60px; height: 60px; }
+    .hc-flow-dot { height: 22px; min-width: 22px; padding: 0 6px; border-radius: 11px; font-size: 7.5px; }
+    .hc-sh-dot  { height: 20px; min-width: 20px; padding: 0 5px; border-radius: 10px; font-size: 7.5px; }
+    .hc-phone { width: 114px; }
+    .hc-phone-frame { border-radius: 24px; padding: 8px 6px 12px; }
+    .hc-phone-notch { width: 44px; height: 14px; border-radius: 0 0 9px 9px; margin: 0 auto 6px; }
+    .hc-phone-screen { min-height: 136px; border-radius: 14px; }
+    .hc-ph-state { padding: 10px; }
+    .pricing-card { padding: 28px 18px; }
+    .btn-primary, .btn-secondary { padding: 14px 24px; font-size: 15px; width: 100%; justify-content: center; }
+    .hero-actions { flex-direction: column; align-items: center; }
     footer { grid-template-columns: 1fr; }
   }
 
-  /* ── ANIM SHOWCASE ────────────────────────────── */
-  section.anim-showcase { padding: 80px 5vw; }
-  .anim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 48px; }
-  @media (max-width: 720px) { .anim-grid { grid-template-columns: 1fr; } }
-  .anim-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: transform .3s, border-color .3s; }
-  .anim-card:hover { transform: translateY(-4px); border-color: rgba(124,58,237,.4); }
-  .anim-scene { height: 220px; background: var(--bg); position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
-  .anim-label { padding: 20px 24px; }
-  .anim-label h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-  .anim-label p  { font-size: 13px; color: var(--text2); line-height: 1.65; }
-
-  /* flow dots (Card A) */
-  .as-flow-dot { position: absolute; height: 28px; min-width: 28px; padding: 0 7px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; white-space: nowrap; }
-  .as-spam { background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.4); color: #f87171; }
-  .as-ok   { background: rgba(74,222,128,.12);  border: 1px solid rgba(74,222,128,.4);  color: #4ade80; }
-  .as-logo-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 60px; height: 60px; border-radius: 16px; overflow: hidden; border: 2px solid rgba(124,58,237,.5); z-index: 2; animation: as-lp 2.5s ease-in-out infinite; }
-
-  /* phone (Card B) */
-  .as-phone { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 118px; }
-  .as-phone-frame { background: var(--surface2); border: 1.5px solid rgba(255,255,255,.12); border-radius: 28px; overflow: hidden; box-shadow: 0 16px 40px rgba(0,0,0,.6); padding: 10px 8px 14px; }
-  .as-phone-notch { width: 50px; height: 16px; background: #000; border-radius: 0 0 10px 10px; margin: 0 auto 6px; }
-  .as-phone-screen { border-radius: 16px; overflow: hidden; background: #0d0a1a; min-height: 150px; position: relative; }
-  .as-ph-state { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; text-align: center; }
-  .as-ph-st1 { animation: as-phst1 6s ease-in-out infinite; }
-  .as-ph-st2 { animation: as-phst2 6s ease-in-out infinite; }
-
-  /* shield (Card C) */
-  .as-ring { position: absolute; left: 50%; top: 50%; width: 72px; height: 72px; border-radius: 50%; border: 1.5px solid rgba(124,58,237,.65); transform: translate(-50%,-50%) scale(.85); }
-  .as-ring1 { animation: as-rng 2.4s ease-out infinite; }
-  .as-ring2 { animation: as-rng 2.4s ease-out .8s infinite; }
-  .as-ring3 { animation: as-rng 2.4s ease-out 1.6s infinite; }
-  .as-logo-shield { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2.5px solid rgba(124,58,237,.65); z-index: 2; }
-
-  /* stats (Card D) */
-  .as-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 16px 16px 8px; }
-  .as-stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
-  .as-stat-num { font-size: 20px; font-weight: 900; letter-spacing: -1px; }
-  .as-stat-lbl { font-size: 8px; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
-  .as-feed-wrap { height: 74px; overflow: hidden; margin: 0 16px 12px; }
-  .as-feed { display: flex; flex-direction: column; gap: 4px; animation: as-feed 3.5s ease-in-out 1s infinite; }
-  .as-feed-row { display: flex; align-items: center; gap: 8px; padding: 5px 8px; background: var(--surface2); border-radius: 8px; flex-shrink: 0; }
-  .as-feed-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-  .as-feed-text { font-size: 10px; color: var(--text2); }
-
-  /* keyframes */
+  /* ── Keyframes used by hero cycle ─────────────── */
   @keyframes as-spA { 0%{left:3%;top:36%;opacity:0;transform:scale(.6)} 10%{left:3%;top:36%;opacity:1;transform:scale(1)} 48%{left:42%;top:36%;opacity:1;transform:scale(1)} 62%{left:45%;top:57%;opacity:.4;transform:scale(.65)} 78%,100%{left:47%;top:84%;opacity:0;transform:scale(.2)} }
   @keyframes as-spB { 0%{left:3%;top:57%;opacity:0;transform:scale(.6)} 10%{left:3%;top:57%;opacity:1;transform:scale(1)} 48%{left:42%;top:57%;opacity:1;transform:scale(1)} 62%{left:45%;top:75%;opacity:.4;transform:scale(.65)} 78%,100%{left:47%;top:98%;opacity:0;transform:scale(.2)} }
-  @keyframes as-okA { 0%{left:3%;top:25%;opacity:0;transform:scale(.6)} 10%{left:3%;top:25%;opacity:1;transform:scale(1)} 100%{left:92%;top:25%;opacity:1;transform:scale(1)} }
-  @keyframes as-okB { 0%{left:3%;top:63%;opacity:0;transform:scale(.6)} 10%{left:3%;top:63%;opacity:1;transform:scale(1)} 100%{left:92%;top:63%;opacity:1;transform:scale(1)} }
   @keyframes as-lp   { 0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.5),0 0 0 6px rgba(124,58,237,.12)} 50%{box-shadow:0 0 0 4px rgba(124,58,237,.3),0 0 0 16px rgba(124,58,237,.04)} }
   @keyframes as-phst1 { 0%,5%{opacity:1} 38%,95%{opacity:0} 100%{opacity:0} }
   @keyframes as-phst2 { 0%,38%{opacity:0} 48%,90%{opacity:1} 100%{opacity:0} }
-  @keyframes as-rng   { from{transform:translate(-50%,-50%) scale(.85);opacity:.7} to{transform:translate(-50%,-50%) scale(3.4);opacity:0} }
   @keyframes as-sh1   { 0%{left:5%;top:22%;opacity:0} 15%{opacity:1} 55%{left:40%;top:32%;opacity:.7} 70%{left:44%;top:37%;opacity:0;transform:scale(.3)} 100%{opacity:0} }
   @keyframes as-sh2   { 0%{left:5%;top:60%;opacity:0} 15%{opacity:1} 55%{left:39%;top:48%;opacity:.7} 70%{left:43%;top:45%;opacity:0;transform:scale(.3)} 100%{opacity:0} }
-  @keyframes as-ok-c  { 0%{left:5%;top:50%;opacity:0} 15%{opacity:1} 55%{left:40%;top:50%;opacity:1} 100%{left:90%;top:50%;opacity:1} }
-  @keyframes as-feed  { 0%{transform:translateY(0);opacity:1} 78%{transform:translateY(-54px);opacity:1} 90%{transform:translateY(-54px);opacity:0} 100%{transform:translateY(0);opacity:0} }
   @keyframes as-blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
   /* ── HERO CYCLE ────────────────────────────────── */
@@ -1042,130 +1027,6 @@
   </div>
 </section>
 
-<!-- ── ANIM SHOWCASE ──────────────────────────────── -->
-<section class="anim-showcase" id="in-action">
-  <p class="section-label reveal">Live protection</p>
-  <h2 class="section-title reveal">Your phone protected, every call</h2>
-  <p class="section-sub reveal">Four views of the same instant decision — all happening before your phone even rings.</p>
-
-  <div class="anim-grid">
-
-    <!-- A: Call Flow Filter (logo as the filter) -->
-    <div class="anim-card">
-      <div class="anim-scene">
-        <div style="position:absolute;left:3%;top:50%;transform:translateY(-50%);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;white-space:nowrap">All calls →</div>
-        <div style="position:absolute;right:3%;top:22%;font-size:9px;color:var(--green);white-space:nowrap">✓ Ring</div>
-        <div style="position:absolute;right:3%;top:61%;font-size:9px;color:var(--green);white-space:nowrap">✓ Ring</div>
-        <div style="position:absolute;left:50%;bottom:10px;transform:translateX(-50%);font-size:9px;color:var(--red);white-space:nowrap">🔇 Silenced</div>
-        <div class="as-logo-center"><img src="icon.png" alt="Nudge" style="width:100%;height:100%;object-fit:cover"></div>
-        <div style="position:absolute;left:50%;top:calc(50% + 37px);transform:translateX(-50%);font-size:9px;color:var(--text3);white-space:nowrap">Nudge Filter</div>
-        <div class="as-flow-dot as-spam" style="animation:as-spA 4s ease-in-out infinite">?</div>
-        <div class="as-flow-dot as-spam" style="animation:as-spB 4s ease-in-out 2s infinite">?</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-a 9s ease-in-out .5s infinite">Mom</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-a 9s ease-in-out 3.5s infinite">Daiwik</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-a 9s ease-in-out 6.5s infinite">Praveena</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-b 9s ease-in-out 2s infinite">Dad</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-b 9s ease-in-out 5s infinite">Mohit</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-b 9s ease-in-out 8s infinite">Srini</div>
-      </div>
-      <div class="anim-label">
-        <h3>Call flow filter</h3>
-        <p>Every call passes through the Nudge filter. Unknown and spam numbers are silenced silently. Trusted contacts sail through loud and clear.</p>
-      </div>
-    </div>
-
-    <!-- B: Live Phone Demo -->
-    <div class="anim-card">
-      <div class="anim-scene">
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:220px;height:220px;border-radius:50%;background:radial-gradient(ellipse,rgba(124,58,237,.1) 0%,transparent 70%);pointer-events:none"></div>
-        <div class="as-phone">
-          <div class="as-phone-frame">
-            <div class="as-phone-notch"></div>
-            <div class="as-phone-screen">
-              <div class="as-ph-state as-ph-st1">
-                <div style="font-size:7px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Incoming call</div>
-                <div style="width:44px;height:44px;border-radius:50%;background:rgba(248,113,113,.15);border:1.5px solid rgba(248,113,113,.35);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin-bottom:6px">?</div>
-                <div style="font-size:12px;font-weight:700;margin-bottom:2px">Unknown</div>
-                <div style="font-size:8px;color:var(--text3);margin-bottom:8px">+44 7911 ••••</div>
-                <div style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#f87171;font-size:8px;font-weight:700;padding:3px 10px;border-radius:20px">🔇 Silenced</div>
-              </div>
-              <div class="as-ph-state as-ph-st2">
-                <div style="font-size:7px;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;animation:as-blink 1.2s infinite">● Ringing</div>
-                <div style="width:44px;height:44px;border-radius:50%;background:rgba(124,58,237,.25);border:1.5px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--purple-lt);margin-bottom:6px">M</div>
-                <div style="font-size:12px;font-weight:700;margin-bottom:2px">Mom</div>
-                <div style="font-size:8px;color:var(--text3);margin-bottom:8px">Trusted contact</div>
-                <div style="background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:8px;font-weight:700;padding:3px 10px;border-radius:20px">📞 Ringing through</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style="position:absolute;left:6%;bottom:18px;font-size:8px;color:#f87171;white-space:nowrap">🔇 unknown → silenced</div>
-        <div style="position:absolute;right:4%;bottom:18px;font-size:8px;color:#4ade80;white-space:nowrap;text-align:right">trusted → rings 📞</div>
-      </div>
-      <div class="anim-label">
-        <h3>Live phone demo</h3>
-        <p>Your screen stays calm. Unknown callers are silenced before your phone rings. Your trusted contacts — family, friends, colleagues — always ring through.</p>
-      </div>
-    </div>
-
-    <!-- C: Shield Radar (logo as center shield) -->
-    <div class="anim-card">
-      <div class="anim-scene">
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:190px;height:190px;border-radius:50%;background:radial-gradient(ellipse,rgba(124,58,237,.08) 0%,transparent 70%);pointer-events:none"></div>
-        <div class="as-ring as-ring1"></div>
-        <div class="as-ring as-ring2"></div>
-        <div class="as-ring as-ring3"></div>
-        <div class="as-logo-shield"><img src="icon.png" alt="Nudge shield" style="width:100%;height:100%;object-fit:cover"></div>
-        <div style="position:absolute;width:28px;height:28px;border-radius:50%;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.4);display:flex;align-items:center;justify-content:center;font-size:10px;color:#f87171;animation:as-sh1 3.2s ease-in-out infinite">?</div>
-        <div style="position:absolute;width:28px;height:28px;border-radius:50%;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.4);display:flex;align-items:center;justify-content:center;font-size:10px;color:#f87171;animation:as-sh2 3.2s ease-in-out 1.6s infinite">?</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-c 9s ease-in-out 0.9s infinite">Mom</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-c 9s ease-in-out 3.9s infinite">Srini</div>
-        <div class="as-flow-dot as-ok" style="animation:ok-seq-c 9s ease-in-out 6.9s infinite">Praveena</div>
-        <div style="position:absolute;left:4%;bottom:12px;font-size:8px;color:#f87171">spam dissolved</div>
-        <div style="position:absolute;right:4%;bottom:12px;font-size:8px;color:#4ade80">trusted: through</div>
-      </div>
-      <div class="anim-label">
-        <h3>Always-on shield</h3>
-        <p>Nudge stands guard 24/7. Spam calls hit the shield and dissolve silently. The people you actually know always get through.</p>
-      </div>
-    </div>
-
-    <!-- D: Live Stats Feed -->
-    <div class="anim-card">
-      <div class="anim-scene">
-        <div class="as-stats-grid">
-          <div class="as-stat-box">
-            <div class="as-stat-num" id="as-cnt-s" style="background:linear-gradient(135deg,var(--purple-lt),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1,247</div>
-            <div class="as-stat-lbl">Screened</div>
-          </div>
-          <div class="as-stat-box">
-            <div class="as-stat-num" id="as-cnt-b" style="color:#f87171">1,189</div>
-            <div class="as-stat-lbl">Blocked</div>
-          </div>
-          <div class="as-stat-box">
-            <div class="as-stat-num" id="as-cnt-o" style="color:#4ade80">58</div>
-            <div class="as-stat-lbl">Passed</div>
-          </div>
-        </div>
-        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 16px 6px">Live screening log</div>
-        <div class="as-feed-wrap">
-          <div class="as-feed">
-            <div class="as-feed-row"><div class="as-feed-dot" style="background:#f87171"></div><span class="as-feed-text">+91 98765 •••• — Silenced</span></div>
-            <div class="as-feed-row"><div class="as-feed-dot" style="background:#f87171"></div><span class="as-feed-text">+1 646 555 •••• — Spam DB</span></div>
-            <div class="as-feed-row"><div class="as-feed-dot" style="background:#4ade80"></div><span class="as-feed-text">Mom — Ringing through</span></div>
-            <div class="as-feed-row"><div class="as-feed-dot" style="background:#f87171"></div><span class="as-feed-text">+44 7900 •••• — Silenced</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="anim-label">
-        <h3>Quietly working</h3>
-        <p>While you sleep, work, or play — Nudge is screening every call. Spam is silenced. Stats build up. You stay undisturbed.</p>
-      </div>
-    </div>
-
-  </div><!-- /anim-grid -->
-</section>
-
 <!-- ── HOW IT WORKS ─────────────────────────────── -->
 <section class="how" id="how">
   <p class="section-label reveal">Simple setup</p>
@@ -1461,22 +1322,6 @@
     hcTimer = setInterval(() => hcGo((hcCur + 1) % hcPanels.length), 12000);
   }
   hcTimer = setInterval(() => hcGo((hcCur + 1) % hcPanels.length), 12000);
-
-  // ── Anim showcase: live counters
-  (function() {
-    let s = 1247, b = 1189, o = 58;
-    setInterval(function() {
-      const spam = Math.random() > 0.28;
-      s++;
-      if (spam) b++; else o++;
-      const es = document.getElementById('as-cnt-s');
-      const eb = document.getElementById('as-cnt-b');
-      const eo = document.getElementById('as-cnt-o');
-      if (es) es.textContent = s.toLocaleString();
-      if (eb) eb.textContent = b.toLocaleString();
-      if (eo) eo.textContent = o.toLocaleString();
-    }, 2200);
-  })();
 
   // ── Contact form
   function handleSubmit(e) {
