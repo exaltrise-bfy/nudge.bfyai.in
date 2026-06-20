@@ -605,7 +605,7 @@
   .hc-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.2); transition: all .4s; cursor: pointer; }
   .hc-dot.active { width: 24px; border-radius: 4px; background: var(--purple-lt); }
   /* Panel A: flow dots (hero-sized) */
-  .hc-flow-dot { position: absolute; height: 40px; min-width: 40px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .hc-flow-dot { position: absolute; height: 40px; min-width: 40px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; white-space: nowrap; opacity: 0; }
   .hc-spam { background: rgba(248,113,113,.12); border: 1.5px solid rgba(248,113,113,.4); color: #f87171; }
   .hc-ok   { background: rgba(74,222,128,.12);  border: 1.5px solid rgba(74,222,128,.4);  color: #4ade80; }
   .hc-logo-a { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 96px; height: 96px; border-radius: 22px; overflow: hidden; border: 3px solid rgba(124,58,237,.5); z-index: 2; animation: as-lp 2.5s ease-in-out infinite; }
@@ -621,7 +621,7 @@
   .hc-ring2 { animation: hc-rng 2.4s ease-out .8s infinite; }
   .hc-ring3 { animation: hc-rng 2.4s ease-out 1.6s infinite; }
   .hc-logo-c { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 96px; height: 96px; border-radius: 50%; overflow: hidden; border: 3px solid rgba(124,58,237,.65); z-index: 2; }
-  .hc-sh-dot { position: absolute; height: 36px; min-width: 36px; padding: 0 10px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .hc-sh-dot { position: absolute; height: 36px; min-width: 36px; padding: 0 10px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; white-space: nowrap; opacity: 0; }
   @keyframes hc-rng { from{transform:translate(-50%,-50%) scale(.85);opacity:.7} to{transform:translate(-50%,-50%) scale(3.2);opacity:0} }
   @keyframes ok-seq-a { 0%{left:3%;top:25%;opacity:0;transform:scale(.6)} 7%{opacity:1;transform:scale(1)} 36%{left:89%;top:25%;opacity:1} 43%{opacity:0} 100%{left:89%;top:25%;opacity:0} }
   @keyframes ok-seq-b { 0%{left:3%;top:64%;opacity:0;transform:scale(.6)} 7%{opacity:1;transform:scale(1)} 36%{left:89%;top:64%;opacity:1} 43%{opacity:0} 100%{left:89%;top:64%;opacity:0} }
